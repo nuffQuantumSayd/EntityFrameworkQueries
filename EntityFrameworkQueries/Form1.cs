@@ -45,12 +45,12 @@ namespace EntityFrameworkQueries
             ApContext dbContext = new();
             //Anonymous type
             List<VendorLocation> results = (from v in dbContext.Vendors
-                           select new VendorLocation
-                           {
-                               VendorName = v.VendorName,
-                               VendorCity = v.VendorCity,
-                               VendorState = v.VendorState
-                           }).ToList();
+                                            select new VendorLocation
+                                            {
+                                                VendorName = v.VendorName,
+                                                VendorCity = v.VendorCity,
+                                                VendorState = v.VendorState
+                                            }).ToList();
 
             StringBuilder displayString = new();
             foreach (VendorLocation vendor in results)
@@ -61,7 +61,28 @@ namespace EntityFrameworkQueries
 
         }
 
+        private void btnMiscQueries_Click(object sender, EventArgs e)
+        {
+            ApContext dbContext = new();
 
+            //Check if something exists
+            bool doesExist = (from v in dbContext.Vendors
+                              where v.VendorState == "WA"
+                              select v).Any();
+
+            //Get number of Invoices
+            int invoiceCount = (from i in dbContext.Invoices
+                                select i).Count();
+
+            //query a single vendor
+            Vendor? singleVendor = (from v in dbContext.Vendors
+                          where v.VendorName == "IBM"
+                          select v).SingleOrDefault();
+            if (singleVendor != null)
+            {
+                //do something with vendor
+            }
+        }
     }
 
     class VendorLocation
